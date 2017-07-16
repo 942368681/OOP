@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box{
+				width: 100px;
+				height: 100px;
+				background: red;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<script type="text/javascript">
+			//过程式写法
+			/*
+			var box=document.getElementById('box');
+			var disX=0;
+			var disY=0;
+			box.onmousedown=function (ev){
+				var ev=ev||window.event;
+				disX=ev.clientX-this.offsetLeft;
+				disY=ev.clientY-this.offsetTop;
+				document.onmousemove=function (ev){
+					ev=ev||window.event;
+					box.style.left=ev.clientX-disX+'px';
+					box.style.top=ev.clientY-disY+'px';
+				};
+				document.onmouseup=function (){
+					document.onmousemove=document.onmouseup=null;
+				};
+				ev.preventDefault();
+			};
+			*/
+			
+			//过程式写法变形
+			/*
+			var box=null;
+			var disX=0;
+			var disY=0;
+			box=document.getElementById('box');
+			init();
+			function init(){
+				box.onmousedown=fnDown;
+			};
+			function fnDown(ev){
+				var ev=ev||window.event;
+				disX=ev.clientX-this.offsetLeft;
+				disY=ev.clientY-this.offsetTop;
+				document.onmousemove=fnMove;
+				document.onmouseup=fnUp;
+				ev.preventDefault();
+			};
+			function fnMove(ev){
+				ev=ev||window.event;
+				box.style.left=ev.clientX-disX+'px';
+				box.style.top=ev.clientY-disY+'px';
+			};
+			function fnUp(){
+				document.onmousemove=document.onmouseup=null;
+			};
+			*/
+			
+			//面向对象写法
+			window.onload=function (){
+				var d1=new Drag('box');
+				d1.init();
+			};
+			function Drag(id){
+				this.box=document.getElementById(id);
+				this.disX=0;
+				this.disY=0;
+			};
+			Drag.prototype.init=function (){
+				var This=this;
+				this.box.onmousedown=function (ev){
+					var ev=ev||window.event;
+					This.fnDown(ev);
+					ev.preventDefault();
+				};
+			};
+			Drag.prototype.fnDown=function (ev){
+				var This=this;
+				this.disX=ev.clientX-this.box.offsetLeft;
+				this.disY=ev.clientY-this.box.offsetTop;
+				document.onmousemove=function (ev){
+					ev=ev||window.event;
+					This.fnMove(ev);
+				};
+				document.onmouseup=this.fnUp;
+			};
+			Drag.prototype.fnMove=function (ev){
+				this.box.style.left=ev.clientX-this.disX+'px';
+				this.box.style.top=ev.clientY-this.disY+'px';
+			};
+			Drag.prototype.fnUp=function (){
+				document.onmousemove=document.onmouseup=null;
+			};
+		</script>
+	</body>
+</html>
