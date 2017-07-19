@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function Person(){}
+			Person.name1 = 'hehe';
+			Object.prototype.name = '莉莉';
+			Object.name = '脏莉';
+			Function.prototype.name = '脏脏';　
+			　
+			Person.prototype.name = function(){
+		　　　　　alert(this.name); 
+		　　}; 
+		　　var person1 = new Person(); 
+		
+			person1.name();//15行的代码块
+			console.log(Person.name);//Person
+			console.log(Person.name1);//hehe
+			new new function(){return function(){
+				var p = new Person();
+				console.log(p.name);//15行的代码块
+			}}
+			/*
+				1、var f = new function(){
+					return function(){
+						var p = new Person();
+						console.log(p.name);//15行的代码块
+					}
+				}
+				
+				2、f = function(){
+					var p = new Person();
+					console.log(p.name);//15行的代码块
+				}
+				
+				3、new f
+					var p = new Person();
+					console.log(p.name);//15行的代码块
+				
+				注：如果new之后是个对象，那么就报错。
+			*/
+		</script>
+	</body>
+</html>

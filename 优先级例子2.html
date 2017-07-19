@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var f1 = new Fn('小明');
+			function Fn(name){
+				this.name = name;
+			};
+			Object.prototype.say = function(){
+				alert('obj');
+			}
+			//第一种
+			/*f1.say();
+			console.dir(f1);*/
+			//第二种
+			Fn.say();
+			console.dir(Fn);
+
+			/*
+				第一种情况
+					f1.say ->  f1.__proto__ -> Fn.prototype.say ->
+					Fn.prototype.__proto__ -> Object.prototype.say
+				第二种情况
+					Fn.say -> Fn.__proto__ -> Function.prototype ->
+					Function.prototype.__proto__ -> Object.protype.say
+			*/
+		</script>
+	</body>
+</html>
