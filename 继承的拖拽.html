@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				width: 100px;
+				height: 100px;
+				position: absolute;
+			}
+			#div1{
+				background: red;
+			}
+			#div2{
+				background: blue;
+				left: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="div1"></div>
+		<div id="div2"></div>
+		<script type="text/javascript">
+			//父类
+			var t1=new Drag('div1');
+			function Drag(obj){
+				this.div=document.getElementById(obj);
+				this.disX=0;
+				this.disY=0;
+			};
+			Drag.prototype.init=function (){
+				var This=this;
+				this.div.onmousedown=function (ev){
+					var ev=ev||window.event;
+					This.fnDown(ev);
+					ev.preventDefault();
+				};
+			};
+			Drag.prototype.fnDown=function (ev){
+				var This=this;
+				this.disX=ev.clientX-this.div.offsetLeft;
+				this.disY=ev.clientY-this.div.offsetTop;
+				document.onmousemove=function (ev){
+					var ev=ev||window.event;
+					This.fnMove(ev);
+				};
+				document.onmouseup=this.fnUp;
+			};
+			Drag.prototype.fnMove=function (ev){
+				this.div.style.left=ev.clientX-this.disX+'px';
+				this.div.style.top=ev.clientY-this.disY+'px';
+			};
+			Drag.prototype.fnUp=function (){
+				document.onmousemove=document.onmouseup=null;
+			};
+			t1.init();
+			
+			//子类
+			var t2=new ChildDrag('div2');
+			function ChildDrag(obj){
+				//属性继承
+				Drag.call(this,obj);
+			};
+			//方法继承
+			extend(ChildDrag.prototype,Drag.prototype);
+			//move时加左右边界限制，功能改变，改写某个方法即可
+			ChildDrag.prototype.fnMove=function (ev){
+				var l=ev.clientX-this.disX;
+				var t=ev.clientY-this.disY;
+				if (l<0) {
+					l=0;
+				} else if (l>document.documentElement.clientWidth-this.div.offsetWidth){
+					l=document.documentElement.clientWidth-this.div.offsetWidth;
+				}
+				this.div.style.left=l+'px';
+				this.div.style.top=t+'px';
+			};
+			//拷贝继承封装函数
+			function extend(obj1,obj2){
+				for (var k in obj2) {
+					obj1[k]=obj2[k];
+				}
+			};
+			t2.init();
+		</script>
+	</body>
+</html>
