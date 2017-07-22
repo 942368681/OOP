@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<ul id="ul">
+			<li>1</li>
+			<li>2</li>
+		</ul>
+		<script type="text/javascript">
+			var ul=document.getElementById('ul');
+			var lis=ul.getElementsByTagName('li');
+			console.log(lis);//此时是类数组
+			var slice = Array.prototype.slice;
+			var lis = slice.call(ul.getElementsByTagName('li'));
+			console.log(lis);//此时转成数组
+			
+			//还可以用转数组方法~~~
+			var lis = Array.from(ul.getElementsByTagName('li'));
+			console.log(lis);//此时转成数组
+		</script>
+	</body>
+</html>
