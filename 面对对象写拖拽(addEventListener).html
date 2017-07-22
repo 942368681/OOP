@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#div{
+				width:100px;
+				height: 100px;
+				background: red;
+				position: absolute;
+				top:0;
+				left: 0;
+			}
+			#div2{
+				width:100px;
+				height: 100px;
+				background: deepskyblue;
+				position: absolute;
+				top:0;
+				left: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="div"></div>
+		<div id="div2"></div>
+		<script type="text/javascript">
+			function Drag(id){
+				this.box=document.getElementById(id);
+				this.disX=0;
+				this.disY=0;
+				this.l=null;
+				this.t=null;
+			};
+			Drag.prototype.init=function (){
+				var This=this;
+				this.box.addEventListener('mousedown',function (ev){
+					This.fnDown(ev);
+				});
+			};
+			Drag.prototype.fnDown=function (ev){
+				var This=this;
+				this.disX=ev.clientX-this.box.offsetLeft;
+				this.disY=ev.clientY-this.box.offsetTop;
+				ev.preventDefault();
+				//move up 需要解绑，所以写成有名函数
+				var Move=function (ev){
+					This.fnMove(ev);
+				};
+				var Up=function (ev){
+					This.fnUp(Move,Up);
+				};
+				document.addEventListener('mousemove',Move);
+				document.addEventListener('mouseup',Up);
+			};
+			Drag.prototype.fnMove=function (ev){
+				this.l=ev.clientX-this.disX;
+				this.t=ev.clientY-this.disY;
+				this.box.style.left=this.l+'px';
+				this.box.style.top=this.t+'px';
+			};
+			Drag.prototype.fnUp=function (move,up){
+				document.removeEventListener('mousemove',move);
+				document.removeEventListener('mouseup',up);
+			};
+			var t1=new Drag('div');
+			t1.init();
+			//继承父类
+			var t2=new Drag2('div2');
+			function Drag2(id){
+				Drag.call(this,id);
+			};
+			for (var k in Drag.prototype) {
+				Drag2.prototype[k]=Drag.prototype[k];
+			}
+			//改单独的功能
+			Drag2.prototype.fnMove=function (ev){
+				this.l=ev.clientX-this.disX;
+				this.t=ev.clientY-this.disY;
+				if (this.l<0) {
+					this.l=0;
+				}
+				this.box.style.left=this.l+'px';
+				this.box.style.top=this.t+'px';
+			};
+			t2.init();
+		</script>
+	</body>
+</html>
