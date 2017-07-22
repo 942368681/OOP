@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var t=new Fn();
+			function Fn(){};
+			Fn.prototype={
+				//改对象的constructor指向
+				constructor:Fn,
+				say:function(){
+					alert('1');
+				},
+				running:function(){
+					alert('2');
+				},
+				hehe:function(){
+					alert('3');
+				}
+			};
+			console.log(t)
+			console.log(t.constructor);//Fn
+			/*
+				解释：
+					因为constructor是构造函数下的属性，t下没有constructor,通过原型链查找，对象的原型链=构造函数的原型，相当于console.log(Fn.prototype.constructor),然而Fn.prototype被赋上了一个别的对象，这个别的对象的constructor也就是它的构造函数是Object，所以如果不更改指向的话，t的constructor指向是Object而不是Fn
+			*/
+		</script>
+	</body>
+</html>
