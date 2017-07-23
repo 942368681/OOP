@@ -95,6 +95,10 @@
 						注意：
 							不能够直接把父类的原型下的方法直接赋值给子类，因为原型的值为对象类型，而对象类型的赋值为赋址，改变子类会影响父类。
 							
+					类式继承：
+						1.属性继承
+							调用父类修正this指向
+						2.方法继承
 				包装对象：
 					当简单类型去调用固定的属性或者方法的时候，那么系统内部会偷偷的把这个简单类型转成对象类型（包装对象）去调用属性或者方法，调用结束之后这个包装对象自动销毁。
 					注意：
@@ -102,7 +106,42 @@
 				
 				instanceof : 运算符
 					左值(对象)是不是右值(构造函数)构造出来的
+				
+				constructor 
+					构造函数上的一个属性。这个属性指向这个实例化对象的构造函数。	
+					不过这个属性非常容易被修改。如果被修改，那么手动的修正constructor的指向。
 					
+				hasOwnProperty：
+					某个属性是不是这个对象下的。
+					返回值：Boolean
+					注意：
+						属性只有在对象自身上的才为true，原型上都不算。
+				
+				toString -> String
+					把别的数据类型转成字符串。
+					每个内置对象都有toString方法
+					只要你使用alert，那么alert函数会调用这个类型toString方法.
+					特性：
+					obj.toSting() -> [object Object]
+					[object 由什么内置的构造函数构造出来的]
+					自定义的实例化对象的toString指向Object的toString。（通过原型链查找的）
+					用途：
+						1.转字符串
+						2.转进制
+							num.toString(要转换的进制数)
+						3.判断内置对象的实例化对象的构造函数是谁（做类型检测）
+						只有Object下的toString才可以类型检测
+						var arr = [];
+						console.log(Object.prototype.toSting.call(arr) === '[object Array]');
+						因为Object的toString[object Object],他能显示内置构造函数
+						所以说把Object的toString借给arr用，等同于，arr就有了Object
+						的toString，利用Object的toString中的特性，可以检查出来到底
+						是不是数组。
+						
+				组件：
+					是对数据和方法的简单封装
+					方便复用
+					组件要有配置参数，能够做到，有配置走配置，没配置走默认。
 			*/
 		</script>
 	</body>
