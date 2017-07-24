@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*
+				严格模式：
+					"use strict"
+					
+				严格模式下：
+					如果直接是函数名 + ()  this -> undefined
+					在事件绑定函数中还是事件触发的那个元素。
+				
+				只要函数名 + () 前面没有主或者改变this的方法，this就是window 
+			*/
+			
+			//几个例子：
+			
+				//1
+					/*function fn(){
+						"use strict"
+						alert(this);  //undefined
+					}
+					fn();*/
+					
+				//2
+					/*document.onclick = function(){
+						"use strict"
+						alert(this);  //document
+					}*/
+					
+				//3
+					/*function fn(){
+						alert(this);
+					}
+					fn();  //window*/
+					
+				//4
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = fn;  //document*/
+					
+				//5
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						fn();  //window
+					};*/
+					
+				//6
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						function fn2(){
+							fn();  //window
+						}
+						fn2.call(document);
+					};*/
+					
+				//7
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						function fn2(){
+							fn();  //window
+						}
+						new fn2;
+					};*/
+					
+				//8
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						function fn2(){
+							alert(this);  //fn2{}
+						}
+						new fn2;
+					};*/
+					
+				//9
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						alert(this);//document
+						function fn2(){
+							alert(this);//fn2{}
+							function fn3(){
+								alert(this);//window
+							}
+							fn3();
+						}
+						new fn2;
+					};*/
+					
+				//10
+					/*function fn(){
+						alert(this);
+					}
+					document.onclick = function(){
+						alert(this); //document
+						function fn2(){
+							alert(this);//报错
+							function fn3(){
+								alert(this);
+							}
+							fn3();
+						}
+						new fn2.call(document);
+					};*/
+					/*
+						直接new函数下的内置方法就报错，自己定义的是不会报错的
+						console.dir(new Function.prototype.call);  //报错
+						function fn3(){}
+						fn3.prototype.call = function(){
+							alert(123);
+						}
+						console.log(new fn3.prototype.call); //不会报错
+					*/
+					
+				//11
+					/*document.onclick = function(){
+						"use strict"
+						var f = (a) => {
+							alert(this); //document
+						}
+						f();
+					}*/
+					
+				//12
+					/*document.onclick = function(){
+						"use strict"
+						var f = (a) => {
+							alert(this);
+						}
+						new f(); //箭头函数不能new，不然报错。
+					}*/
+					
+				//13
+					/*document.onclick = function(){
+						"use strict"
+						setTimeout(()=>{
+							alert(this);//document
+						},1000);
+					}*/
+					
+				//14
+					/*document.onclick = function(){
+						"use strict"
+						var arr = [];
+						arr.fn = function(){
+							alert(this);
+						}
+						setTimeout(arr.fn,1000);//window
+					}*/
+		</script>
+	</body>
+</html>
