@@ -15,6 +15,12 @@
 					在事件绑定函数中还是事件触发的那个元素。
 				
 				只要函数名 + () 前面没有主或者改变this的方法，this就是window 
+				
+				this优先级
+					人为手动去设置 > new > 定时器  > 事件 > fn()
+					人为设置就是：var _this = this;
+				
+				碰到函数或者new this就有可能会变
 			*/
 			
 			//几个例子：
@@ -160,6 +166,44 @@
 							alert(this);
 						}
 						setTimeout(arr.fn,1000);//window
+					}*/
+					
+				//15
+					/*var obj = {
+						name:'nizp',
+						fn:function(){
+							console.log(this.name);//" "
+						}
+					}
+					//window下有name值为 ""
+					setTimeout(obj.fn,1000);
+					document.onclick = obj.fn;  //this -> document
+					documemt.onclick = function(){
+						obj.fn(); //this -> obj
+					}*/
+				
+				//16
+					/*function fn(){
+						console.log(this);//fn
+						var fn2 = () =>{
+							alert(this);//fn{}
+						}
+						fn2();
+					}
+					new fn();*/
+					
+				//17
+					/*function fn(){
+						console.log(this);
+					}
+					document.onclick = function(){
+						fn();//window
+						setTimeout(new fn,1000); //fn{} //报错
+						alert(this);//document
+						setTimeout(function(){
+							alert(this);//window
+							new fn;  //fn{}
+						},1000);
 					}*/
 		</script>
 	</body>
